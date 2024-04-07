@@ -10,7 +10,7 @@ from XJ.Widgets.XJQ_PureColorIcon import XJQ_PureColorIcon
 
 import sys
 from PyQt5.QtWidgets import QApplication,QWidget,QVBoxLayout
-from XJ_LeetCode import XJ_LeetCode
+from XJ_LeetCode import Manager
 
 class XJQ_QuestionList(QWidget):
 	config={
@@ -33,7 +33,7 @@ class XJQ_QuestionList(QWidget):
 			imgPath为图片缓存路径
 		'''
 		super().__init__()
-		lc=XJ_LeetCode(sqlPath,imgPath)
+		lc=Manager(sqlPath,imgPath)
 		lv=XJQ_ListWidget()
 		pn=XJQ_PageNavigation()
 

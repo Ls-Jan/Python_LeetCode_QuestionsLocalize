@@ -1,8 +1,9 @@
 
+from . import FilterNape
 from XJ.Structs.XJ_SQLite import XJ_SQLite
-import FilterNape
 
 __all__=['Filter']
+#TODO：mole，又不是不能用————sql支持多条join子句，因此不需要连续两张临时表先后存储临时数据，可以优化
 class Filter:
 	'''
 		建造者模式，将多表的条件查询分成多次进行，并最终处理为单张临时表，该表仅记录questionSlug信息
@@ -21,7 +22,7 @@ class Filter:
 		self.__lst.append(filterNape)
 	def Opt_Start(self):
 		'''
-			开始生成匹配结果
+			开始生成匹配结果。
 		'''
 		compTable=None
 		saveTable=''
@@ -31,8 +32,9 @@ class Filter:
 			self.__sql.Opt_DeleteTable(saveTable)
 			self.__sql.Get_RowsData(
 				nape.table,
-				nape.conditions,
+				*nape.conditions,
 				cols=nape.cols,
+				conditionsLink="AND",
 				distinct=True,
 				joinTableName=compTable,
 				innerJoinCondition=f"{nape.table}.questionSlug=={str(compTable)}.questionSlug",
@@ -45,11 +47,11 @@ class Filter:
 		self.__lst.clear()
 	def Get_ReslutTableName(self):
 		'''
-			获取生成的表，以便后续操作
+			获取生成的表，以便后续进行表格的连接操作
 		'''
 		if(len(self.__lst)):
-			data=self.__lst[-1]
-			return data.saveTable
+			saveTable=self.__tempTable.format(n=str(len(self.__lst)-1%2))
+			return saveTable
 		return None
 
 

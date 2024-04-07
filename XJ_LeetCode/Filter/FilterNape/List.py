@@ -18,15 +18,14 @@ class List(Base):
 		table='list'
 		conditions=[]
 		if(keywords):
-			conditions.append(' OR '.join([f'INSTR({table}.title,{key})' for key in keywords]))
+			conditions.append(' AND '.join([f'INSTR({table}.title,"{key}")' for key in keywords if key]))
 		if(tags):
-			conditions.append(' OR '.join([f'INSTR({table}.tags,{tag})' for tag in tags]))
+			conditions.append(' AND '.join([f'INSTR({table}.tags,"{tag}")' for tag in tags if tag]))
 		if(difficulty!=None):
-			conditions.append(f'INSTR({table}.difficulty,{difficulty})')
+			conditions.append(f'INSTR({table}.difficulty,"{difficulty}")')
 		if(accessible!=None):
-			conditions.append(f'{table}.invisible=={str(not accessible)}')
+			conditions.append(f'{table}.invisible=={"FALSE" if accessible else "TRUE"}')
 		self.table=table
 		self.conditions=conditions
 		self.cols=[f"{table}.questionSlug"]
-
 

@@ -7,7 +7,7 @@ import requests
 import json
 import os
 import re
-from XJ_LeetCode import XJ_LeetCode
+from XJ_LeetCode import Manager
 from bs4 import BeautifulSoup
 
 
